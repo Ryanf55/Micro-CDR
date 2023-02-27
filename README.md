@@ -13,6 +13,8 @@ This library is focused on embedded and resource-limited systems.
 
 *Micro CDR* uses a static buffer, and allow to serialize and deserialize in both, big endianness and little endianness.
 
+A *C++20* version of the *CDR* serialization is also provided for similar systems that support C++20. 
+
 ## Usage examples
 This is a code example showing the serialization and deserialization of a string.
 As *Micro CDR* uses a static buffer, the user has to provide a defined buffer and its size during the *ucdrBuffer* creation.
@@ -51,7 +53,7 @@ As *Micro CDR* uses a static buffer, the user has to provide a defined buffer an
     }
 ```
 
-## API functions
+## API functions for C
 
 ```c
 void ucdr_init_buffer                       (ucdrBuffer* ub, uint8_t* data, size_t size);
@@ -176,6 +178,19 @@ bool ucdr_buffer_error(const ucdrBuffer* ub);
 ```
 Returns the status error of the `ucdrBuffer`.
 - `ub`: the `ucdrBuffer` struct
+
+### API functions for C++
+
+The API is as close as possible, with the following changes:
+
+| Feature | C | C++ |
+| - | - | - |
+| Macros | used | changed to constexpr |
+| Buffers  | raw pointer + length | std::array |
+| Endinness | behavior modified with macros | std::endian |
+
+Exceptions are not used, buffer sizes are still fixed.  
+TODO: endinness https://stackoverflow.com/a/38141476/11032285 or https://stackoverflow.com/questions/3877344/detect-endianness-with-cmake
 
 ### Serialization/deserialization functions
 Adding to this, there is a big set of functions for deserialize and deserialize different kind of types:

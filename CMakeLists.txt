@@ -25,6 +25,7 @@ option(UCDR_BUILD_TESTS "Build tests." OFF)
 option(UCDR_BUILD_EXAMPLES "Build examples." OFF)
 option(UCDR_PIC "Control Position Independent Code." ON)
 option(UCDR_ISOLATED_INSTALL "Install the project into a separated folder with version control." ON)
+option(UCDR_CXX20_SUPPORT "Add the C++20 wrapper to the library." OFF)
 option(BUILD_SHARED_LIBS "Control shared/static library building." OFF)
 
 option(UCDR_BUILD_CI_TESTS "Build CI test cases." OFF)
@@ -104,6 +105,14 @@ add_library(${PROJECT_NAME}
     src/c/types/sequence.c
     )
 
+add_library(${PROJECT_NAME}_hpp
+    src/cpp/common.cpp
+    # src/c/types/basic.c
+    # src/c/types/string.c
+    # src/c/types/array.c
+    # src/c/types/sequence.c
+    )
+
 # Set common properties
 set_common_compile_options(${PROJECT_NAME})
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -117,6 +126,15 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         YES
     POSITION_INDEPENDENT_CODE
         ${UCDR_PIC}
+    )
+
+    set_target_properties(${PROJECT_NAME}_hpp PROPERTIES
+    VERSION
+        ${PROJECT_VERSION}
+    SOVERSION
+        ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+    CXX_STANDARD
+        20
     )
 
 target_compile_options(${PROJECT_NAME}
